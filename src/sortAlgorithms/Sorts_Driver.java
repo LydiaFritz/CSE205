@@ -3,7 +3,7 @@ package sortAlgorithms;
 public class Sorts_Driver {
 	public static void main(String[] args) {
 
-		Integer[] foo = { 1, 2, 3, 4, 0 };
+		Integer[] foo = { 33,22,55,77,6,99,0,101,32,9,-7,55 };
 
 		printList(foo);
 		System.out.println();
@@ -12,10 +12,38 @@ public class Sorts_Driver {
 
 		printList(foo);
 		System.out.println();
+		
+		int loc = binSearch(foo, 101);
+		if(loc == -1)System.out.println(101 + " not found.");
+		else System.out.println(101 + " found at index " + loc);
 
+	}
+	
+	public static <T extends Comparable<T>> int binSearch(T[] arr, T key) {
+		int start = 0, last = arr.length;
+		int mid = (start+last)/2;
+		while((start < last) && !arr[mid].equals(key)) {
+			if(arr[mid].compareTo(key)<0) {
+				start = mid + 1;
+			}
+			else {
+				last = mid;
+			}
+			mid = (start+last)/2;
+		}
+		if(arr[mid].equals(key))return mid;
+		else return -1;
+	}
+
+	public static <T extends Comparable<T>> int seqSearch(T[] arr, T key) {
+		for (int i = 0; i < arr.length; i++)
+			if (key.equals(arr[i]))
+				return i;
+		return -1;
 	}
 
 	public static <T extends Comparable<T>> void sortC(T[] arr) {
+
 		T temp = null;
 
 		for (int i = 0; i < arr.length; i++) {

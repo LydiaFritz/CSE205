@@ -1,23 +1,68 @@
 package sortAlgorithms;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Sorts_Driver {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 
-		String[] foo = { "a", "i", "e", "o", "y", "u" };
+		ArrayList<String> lst = new ArrayList<String>();
 
-		printList(foo);
-		System.out.println();
+		Scanner fin = new Scanner(new File("stuff.txt"));
+		while(fin.hasNext()) {
+			lst.add(fin.next());
+		}
+		int i = 0;
+		String [] arr = new String[lst.size()];
+		for(String s : lst) {
+			arr[i++] = s;
+		}
+		
+		printList(arr);
+		
+		QSort(arr, 0, arr.length-1);
+		
+		printList(arr);
 
-		sort(foo);
+	}
 
-		printList(foo);
-		System.out.println();
+	public static int getPivot(String[] arr, int firstIndex, int lastIndex) {
 
-		/*
-		 * int loc = binSearch(foo, 101); if(loc == -1)System.out.println(101 +
-		 * " not found."); else System.out.println(101 + " found at index " + loc);
-		 */
+		// let last element be the pivot
+		String pivot = arr[lastIndex];
+		// consider all other elements
+		int breakPos = firstIndex - 1;
+		for (int j = firstIndex; j < lastIndex; j++) {
 
+			// If current element is smaller than or
+			// equal to pivot
+			if (arr[j].compareTo(pivot) < 0) {
+				// advance the break position
+				breakPos++;
+				// swap small element to breakPos
+				String temp = arr[breakPos];
+				arr[breakPos] = arr[j];
+				arr[j] = temp;
+			}
+		}
+
+		// swap pivot with element at breakPos+1
+		String temp = arr[breakPos + 1];
+		arr[breakPos + 1] = arr[lastIndex];
+		arr[lastIndex] = temp;
+
+		return breakPos + 1;
+	}
+
+	public static void QSort(String[] arr, int start, int end) {
+		// get pivot
+		if (start < end) {
+			int pivot = getPivot(arr, start, end);
+			QSort(arr, start, pivot - 1);
+			QSort(arr, pivot + 1, end);
+		}
 	}
 
 	public static <T extends Comparable<T>> int binSearch(T[] arr, T key) {
